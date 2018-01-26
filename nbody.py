@@ -1,8 +1,10 @@
+from __future__ import print_function
 import matplotlib.pyplot as plt
 import numpy as np
 import numpy.random as random
 import math
 import timeit
+
 
 class body:
     def __init__(self, pos, mass, vel, color='cyan'):
@@ -10,7 +12,7 @@ class body:
         self.mass = mass
         self.vel = vel # shape (2,)
         self.color = color # string passed into plt.plot()
-        
+
 def get_accell(bodies, target_ind):
     G = 6.67408e-11 # gravitational constant
     accell = np.array([0.0,0.0])
@@ -34,7 +36,7 @@ def update_vel(bodies, time_step = 1.0):
         bod.vel[0] += a[0] * time_step
         bod.vel[1] += a[1] * time_step
         #print "vel ", bod.vel
-        
+
 def update_pos(bodies, time_step = 1.0):
     for bod in bodies:
         bod.pos[0] += bod.vel[0] * time_step
@@ -43,7 +45,7 @@ def update_pos(bodies, time_step = 1.0):
 
 def run_simulation(bodies, time_step = 1.0, max_steps = 10):
     # create array for histories, used for plotting trails
-    #hists = [[[b.pos[0], b.pos[1]]] for b in bodies] 
+    #hists = [[[b.pos[0], b.pos[1]]] for b in bodies]
     hists = np.zeros((len(bodies), max_steps, 2))
     fig = plt.figure()
     ax = plt.subplot(facecolor='white')
@@ -65,11 +67,11 @@ def run_simulation(bodies, time_step = 1.0, max_steps = 10):
         update_pos(bodies, time_step)
         plt.pause(0.01)
         times[i] = timeit.default_timer() - start_time
-        print times[i]
+        print (times[i])
     plt.close()
-    print "average time to draw frame: ", times.mean()
-    print "std dev of times: ", times.std()
-    print "max fps: ", np.floor(1.0/times.mean())
+    print ("average time to draw frame: ", times.mean())
+    print ("std dev of times: ", times.std())
+    print ("max fps: ", np.floor(1.0/times.mean()))
 
 def test_run():
     """
@@ -84,9 +86,9 @@ def test_run():
     #bodies = [body([4 * random.rand(2) - 1], random.rand() * 4e10, [0.0]) for i in range(10)]
     bodies = []
     for i in range(10):
-        bodies.append(body(8*random.rand(2)-4, \
-                           random.rand() * 4e10, \
-                           3*random.rand(2)-1.5, \
+        bodies.append(body(8*random.rand(2)-4,
+                           random.rand() * 4e10,
+                           3*random.rand(2)-1.5,
                            random.rand(3)))
     run_simulation(bodies, 0.05, 300)
     #time_test(bodies)
@@ -98,10 +100,10 @@ def time_test(bodies):
         update_vel(bodies)
         update_pos(bodies)
         times[i] = timeit.default_timer() - start_time
-        print times[i]
-    print "avg time for one step: ", times.mean()
-    print "std dev of times: ", times.std()
-    print "max iterations per second: ", np.floor(1.0/times.mean())
+        print (times[i])
+    print ("avg time for one step: ", times.mean())
+    print ("std dev of times: ", times.std())
+    print ("max iterations per second: ", np.floor(1.0/times.mean()))
 
 if __name__ == '__main__':
     test_run()
